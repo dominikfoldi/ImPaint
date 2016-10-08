@@ -25,8 +25,8 @@ namespace EyeTribe.Unity.Interaction
     {
         [SerializeField] private float _Radius = 10f;
         [SerializeField] private float _RandomRange;
-        [SerializeField] private int _NumLongitude = 12;
-        [SerializeField] private int _NumLatitude = 12;
+        [SerializeField] private int _NumLongitude = 1;
+        [SerializeField] private int _NumLatitude = 1;
         [SerializeField] private float _DuplicateDistance = .5f;
         [SerializeField] private bool _FaceCenter = true;
         [SerializeField] private bool _RandomRotation = false;
@@ -83,34 +83,28 @@ namespace EyeTribe.Unity.Interaction
             Vector3 pos;
             List<Holder> tobe = new List<Holder>();
             // Generate transforms while evaluating duplicates
-            for (int i = _NumLongitude; --i >= 0; )
-            {
-                for (int j = _NumLatitude; --j >= 0; )
-                {
-                    float rangeHalf = _RandomRange * .5f;
-                    range = _Radius + UnityEngine.Random.Range(-rangeHalf, rangeHalf);
-                    dir = Vector3.forward;
-                    v = (transform.rotation * Quaternion.Euler(LongStep * i, LatStep * j, 0f)) * dir;
-                    pos = v * range;
+            float rangeHalf = _RandomRange * .5f;
+            range = _Radius + UnityEngine.Random.Range(-rangeHalf, rangeHalf);
+            dir = Vector3.forward;
+            v = (transform.rotation * Quaternion.Euler(LongStep, LatStep, 0f)) * dir;
+            pos = v * range;
 
-                    /*
-                    Debug.DrawLine(transform.position + transform.rotation * pos,
-                        transform.position + transform.rotation * (pos + (v * -range)), Color.red, 5f);
-                    */
+            /*
+            Debug.DrawLine(transform.position + transform.rotation * pos,
+                transform.position + transform.rotation * (pos + (v * -range)), Color.red, 5f);
+            */
 
-                    Quaternion rotation = Quaternion.identity;
+            Quaternion rotation = Quaternion.identity;
 
-                    if (_FaceCenter)
-                        rotation = transform.rotation * Quaternion.LookRotation(v * -1);
+            if (_FaceCenter)
+                rotation = transform.rotation * Quaternion.LookRotation(v * -1);
 
-                    if (_RandomRotation)
-                        rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 360f), 
-                            UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
+            if (_RandomRotation)
+                rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 360f),
+                    UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
 
-                    if (CheckDuplicate(tobe, pos))
-                        tobe.Add(new Holder(pos, rotation));
-                }
-            }
+            if (CheckDuplicate(tobe, pos))
+                tobe.Add(new Holder(pos, rotation));
 
             // Generate GameObjects
             foreach (Holder h in tobe)
