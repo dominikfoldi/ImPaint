@@ -60,34 +60,17 @@ namespace EyeTribe.Unity.Interaction
                 GameObject.Destroy(child.gameObject);
         }
 
-        private class Holder
-        {
-            public Vector3 pos;
-            public Quaternion rot;
-
-            public Holder( Vector3 pos, Quaternion rot)
-            {
-                this.pos = pos;
-                this.rot = rot;
-            }
-        }
-
         protected virtual void Initialize()
         {
             float LongStep = 360f / _NumLongitude;
             float LatStep = 360f / _NumLatitude;
 
-            Vector3 dir;
-            float range;
-            Vector3 v;
-            Vector3 pos;
-            List<Holder> tobe = new List<Holder>();
             // Generate transforms while evaluating duplicates
             float rangeHalf = _RandomRange * .5f;
-            range = _Radius + UnityEngine.Random.Range(-rangeHalf, rangeHalf);
-            dir = Vector3.forward;
-            v = (transform.rotation * Quaternion.Euler(LongStep, LatStep, 0f)) * dir;
-            pos = v * range;
+            var range = _Radius + UnityEngine.Random.Range(-rangeHalf, rangeHalf);
+            var dir = Vector3.forward;
+            var v = (transform.rotation * Quaternion.Euler(LongStep, LatStep, 0f)) * dir;
+            var pos = v * range;
 
             /*
             Debug.DrawLine(transform.position + transform.rotation * pos,
@@ -103,24 +86,8 @@ namespace EyeTribe.Unity.Interaction
                 rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 360f),
                     UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
 
-            if (CheckDuplicate(tobe, pos))
-                tobe.Add(new Holder(pos, rotation));
-
-            // Generate GameObjects
-            foreach (Holder h in tobe)
-            {
-                GameObject go = CreateObject(h.pos, h.rot);
-                go.transform.parent = transform;
-            }
-        }
-
-        private bool CheckDuplicate(List<Holder> tobe, Vector3 pos)
-        {
-            foreach (Holder h in tobe)
-                if (Vector3.Distance(h.pos, pos) < _DuplicateDistance)
-                    return false;
-
-            return true;
+            GameObject go = CreateObject(pos, rotation);
+            go.transform.parent = transform;
         }
 
         protected virtual GameObject CreateObject(Vector3 position, Quaternion rotation)
