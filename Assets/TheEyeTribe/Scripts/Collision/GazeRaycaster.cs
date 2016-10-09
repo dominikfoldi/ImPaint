@@ -42,6 +42,7 @@ namespace EyeTribe.Unity
         public bool IsControllingReticle = true;                    // Optional manual override of Reticle control
 
         private bool _UsingSmooth;
+        private bool _isToggleObject = false;
 
         void Awake()
         {
@@ -135,9 +136,11 @@ namespace EyeTribe.Unity
                 {
                     VRInteractiveItem interactible = hit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
 
-                    if (null != interactible && interactible.enabled)
+                    if (null != interactible && interactible.enabled && !_isToggleObject && Input.GetMouseButtonDown(0))
                     {
+                        UpdateToggle();
                         CurrentInteractible = interactible;
+                        SetObjectPosition(hit);
 
                         // If we hit an interactive item and it's not the same as the last interactive item, then call Over
                         if (interactible && interactible != _LastInteractible)
@@ -149,16 +152,20 @@ namespace EyeTribe.Unity
 
                         _LastInteractible = interactible;
                     }
-                    else
+                    else if(_isToggleObject && Input.GetMouseButtonDown(0))
                     {
                         // hit VRInteractiveItem is disabled, deactive the last interactive item.
+                        UpdateToggle();
+                        SetObjectPosition(hit);
                         DeactiveLastInteractible();
                         CurrentInteractible = null;
                     }
                 }
-                else
+                else if(_isToggleObject && Input.GetMouseButtonDown(0))
                 {
                     // Nothing was hit, deactive the last interactive item.
+                    SetObjectPosition(hit);
+                    UpdateToggle();
                     DeactiveLastInteractible();
                     CurrentInteractible = null;
                 }
@@ -167,14 +174,14 @@ namespace EyeTribe.Unity
                 if (IsControllingReticle && _Reticle.enabled)
                 {
                     _Reticle.SetPosition(hit);
-                    _Reticle.Show();
+                    SetObjectPosition(hit);
                 }
 
                 // If optional reticle set, position it
                 if (null != _ReticleOptional && _ReticleOptional.gameObject.activeInHierarchy && _ReticleOptional.enabled)
                 {
                     _ReticleOptional.SetPosition(hit);
-                    _ReticleOptional.Show();
+                    SetObjectPosition(hit);
                 }
             }
             else
@@ -185,6 +192,23 @@ namespace EyeTribe.Unity
 
                 if (IsControllingReticle && _Reticle.enabled)
                     _Reticle.Hide();
+            }
+        }
+
+        private void UpdateToggle()
+        {
+            if(_isToggleObject)
+                _Reticle.Show();
+            else
+                _Reticle.Hide();
+            _isToggleObject = !_isToggleObject;
+        }
+
+        private void SetObjectPosition(RaycastHit hit)
+        {
+            if (CurrentInteractible != null)
+            {
+                CurrentInteractible.transform.position = hit.point;
             }
         }
     }
