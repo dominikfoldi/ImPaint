@@ -208,6 +208,7 @@ namespace EyeTribe.Unity
         {
             if (CurrentInteractible != null)
             {
+                CurrentInteractible.transform.forward = Vector3.zero;
                 CurrentInteractible.transform.position = hit.point;
             }
         }

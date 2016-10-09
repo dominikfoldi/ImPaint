@@ -375,7 +375,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 355610654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.18}
+  m_LocalPosition: {x: 0, y: 0, z: -7.24}
   m_LocalScale: {x: 0.0030070327, y: 0.0030070327, z: 0.0030070327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1332,6 +1332,7 @@ MonoBehaviour:
   _HideOnStart: 1
   _Selection: {fileID: 429719992}
   _Reticle: {fileID: 1292006741}
+  _IsSelectionRadialActive: 0
 --- !u!114 &1292006741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1848,7 +1849,6 @@ MonoBehaviour:
   _NumLatitude: 12
   _DuplicateDistance: 0.5
   _FaceCenter: 0
-  _SelectionRadialEyeTribe: {fileID: 1292006740}
   _ReticleTransform: {fileID: 1561963833}
 --- !u!224 &1486279717
 RectTransform:

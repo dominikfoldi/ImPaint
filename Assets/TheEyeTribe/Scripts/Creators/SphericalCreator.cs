@@ -61,7 +61,7 @@ namespace EyeTribe.Unity.Interaction
 
         protected virtual void Initialize()
         {
-            var pos = new Vector3(0, 0);
+            var pos = new Vector3(0, 0, 0);
 
             GameObject go = CreateObject(pos);
             go.transform.parent = transform;
