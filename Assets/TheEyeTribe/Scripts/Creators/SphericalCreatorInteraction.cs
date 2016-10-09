@@ -17,15 +17,11 @@ namespace EyeTribe.Unity.Interaction
 
     public class SphericalCreatorInteraction : SphericalCreator
     {
-        [SerializeField]private SelectionRadialEyeTribe _SelectionRadialEyeTribe;
         [SerializeField]private Transform _ReticleTransform;
 
         protected override void Awake()
         {
             base.Awake();
-
-            if (null == _SelectionRadialEyeTribe)
-                throw new Exception("_SelectionRadialEyeTribe is not set");
 
             if (null == _ReticleTransform)
                 throw new Exception("_ReticleTransform is not set");

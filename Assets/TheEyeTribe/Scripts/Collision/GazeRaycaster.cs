@@ -41,7 +41,7 @@ namespace EyeTribe.Unity
 
         public bool IsControllingReticle = true;                    // Optional manual override of Reticle control
 
-        private bool _UsingSmooth = true;
+        private bool _UsingSmooth;
         private bool _isToggleObject = false;
 
         void Awake()
