@@ -29,7 +29,6 @@ namespace EyeTribe.Unity.Interaction
         [SerializeField] private int _NumLatitude = 1;
         [SerializeField] private float _DuplicateDistance = .5f;
         [SerializeField] private bool _FaceCenter = true;
-        [SerializeField] private bool _RandomRotation = false;
 
         protected virtual void Awake()
         {
@@ -62,40 +61,17 @@ namespace EyeTribe.Unity.Interaction
 
         protected virtual void Initialize()
         {
-            float LongStep = 360f / _NumLongitude;
-            float LatStep = 360f / _NumLatitude;
+            var pos = new Vector3(0, 0);
 
-            // Generate transforms while evaluating duplicates
-            float rangeHalf = _RandomRange * .5f;
-            var range = _Radius + UnityEngine.Random.Range(-rangeHalf, rangeHalf);
-            var dir = Vector3.forward;
-            var v = (transform.rotation * Quaternion.Euler(LongStep, LatStep, 0f)) * dir;
-            var pos = v * range;
-
-            /*
-            Debug.DrawLine(transform.position + transform.rotation * pos,
-                transform.position + transform.rotation * (pos + (v * -range)), Color.red, 5f);
-            */
-
-            Quaternion rotation = Quaternion.identity;
-
-            if (_FaceCenter)
-                rotation = transform.rotation * Quaternion.LookRotation(v * -1);
-
-            if (_RandomRotation)
-                rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 360f),
-                    UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(0f, 360f));
-
-            GameObject go = CreateObject(pos, rotation);
+            GameObject go = CreateObject(pos);
             go.transform.parent = transform;
         }
 
-        protected virtual GameObject CreateObject(Vector3 position, Quaternion rotation)
+        protected virtual GameObject CreateObject(Vector3 position)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             go.transform.position = position;
-            go.transform.rotation = rotation;
 
             return go;
         }

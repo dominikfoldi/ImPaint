@@ -31,26 +31,16 @@ namespace EyeTribe.Unity.Interaction
                 throw new Exception("_ReticleTransform is not set");
         }
 
-        protected override GameObject CreateObject(Vector3 position, Quaternion rotation)
+        protected override GameObject CreateObject(Vector3 position)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.transform.position = position;
-            go.transform.rotation = rotation;
 
             VRInteractiveItem vrii = go.AddComponent<VRInteractiveItem>();
-            go.AddComponent<InitialCollisionCheck>();
             InteractiveColorInterpolator ici  = go.AddComponent<InteractiveColorInterpolator>();
-            InteractiveShakeAndFire isaf = go.AddComponent<InteractiveShakeAndFire>();
-            Rigidbody rb = go.AddComponent<Rigidbody>();
 
             ici.InteractiveItem = vrii;
             ici.Initialize();
-
-            isaf.InteractiveItem = vrii;
-            isaf.Selection = _SelectionRadialEyeTribe;
-            isaf.ReticleTransform = _ReticleTransform;
-            isaf.RigidBody = rb;
-            isaf.Initialize();
 
             return go;
         }
